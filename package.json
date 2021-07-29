@@ -1,0 +1,22 @@
+{
+  "name": "ejs-todolist",
+  "version": "1.0.0",
+  "description": "To Do List made using EJS templating.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thisisrajneel/EJS-ToDoList.git"
+  },
+  "author": "Rajneel Anuraj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thisisrajneel/EJS-ToDoList/issues"
+  },
+  "homepage": "https://github.com/thisisrajneel/EJS-ToDoList#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
