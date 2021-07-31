@@ -8,22 +8,28 @@
     <title>test</title>
 </head>
 <body>
-    <h1>
-        <%= day %>
-    </h1>
+    
+    <div class="box" id="heading">
+        <h1>
+            <%= day %>
+        </h1>
+    </div>
 
-    <ul>
+    <div class="box">
         <% for( var i=0 ;i<task.length ;++i ) { %>
-            <li>
-                <%= task[i] %>
-            </li>
+            <div class="item">
+                <input type="checkbox">
+                <p>
+                    <%= task[i] %>
+                </p>
+            </div>
         <% } %>
-    </ul>
+        <form action="/" method="post">
+            <input type="text" id="new" name="newTask" placeholder="New Task">
+            <button type="submit">+</button>
+        </form>
+    </div>
 
-    <form action="/" method="post">
-        <label for="new">Add Task</label>
-        <input type="text" id="new" name="newTask">
-        <button type="submit">Add</button>
-    </form>
+    
 </body>
 </html>
