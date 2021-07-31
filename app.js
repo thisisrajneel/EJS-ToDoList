@@ -1,38 +1,29 @@
 const express = require('express');
 
 const app = express();
+app.use(express.urlencoded({extended:true}));
 
 app.set('view engine', 'ejs')
 
+var task = [];
+
 app.get('/', (req, res)=>{
     var today = new Date;
-    var dayNumber = today.getDay();
-    var day = '';
+    var options = {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric', 
+    };
+    var dateComplete = today.toLocaleDateString('en-US', options);
+    
+    res.render('template', {day:dateComplete, task: task});
+})
 
-    switch(dayNumber) {
-        case 0:
-            day = 'Sunday'
-            break;
-        case 1:
-            day = 'Monday'
-            break;
-        case 2:
-            day = 'Tuesday'
-            break;
-        case 3:
-            day = 'Wednesday'
-            break;
-        case 4:
-            day = 'Thursday'
-            break;
-        case 5:
-            day = 'Friday'
-            break;
-        case 6:
-            day = 'Saturday'
-            break;
-    }
-    res.render('template', {day:day})
+app.post('/', (req, res)=>{
+    task.push(req.body.newTask);
+
+    res.redirect('/');
 })
 
 app.listen(3000, ()=>{

@@ -7,15 +7,22 @@
     <title>test</title>
 </head>
 <body>
-    <% if(day === "Thursday") { %>
-        <p style="color: red;">
-            It's a <%= day %> !
-        </p>
-    <% } else { %>
-        <p style="color: blue;">
-            It's a <%= day %> !
-        </p>
-    <% } %>
+    <h1>
+        <%= day %>
+    </h1>
 
+    <ul>
+        <% for( var i=0 ;i<task.length ;++i ) { %>
+            <li>
+                <%= task[i] %>
+            </li>
+        <% } %>
+    </ul>
+
+    <form action="/" method="post">
+        <label for="new">Add Task</label>
+        <input type="text" id="new" name="newTask">
+        <button type="submit">Add</button>
+    </form>
 </body>
 </html>
