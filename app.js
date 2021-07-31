@@ -6,12 +6,33 @@ app.set('view engine', 'ejs')
 
 app.get('/', (req, res)=>{
     var today = new Date;
-    if(today.getDate() === 6 || today.getDate() === 0) {
-        res.send('<h1>welcome to the weekend!</h1>')
+    var dayNumber = today.getDay();
+    var day = '';
+
+    switch(dayNumber) {
+        case 0:
+            day = 'Sunday'
+            break;
+        case 1:
+            day = 'Monday'
+            break;
+        case 2:
+            day = 'Tuesday'
+            break;
+        case 3:
+            day = 'Wednesday'
+            break;
+        case 4:
+            day = 'Thursday'
+            break;
+        case 5:
+            day = 'Friday'
+            break;
+        case 6:
+            day = 'Saturday'
+            break;
     }
-    else {
-        res.send('<h1>oh no! slog through the week then!</h1>')
-    }
+    res.render('template', {day:day})
 })
 
 app.listen(3000, ()=>{
