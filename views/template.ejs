@@ -17,14 +17,14 @@
     </div>
 
     <div class="box">
-        <% for( var i=0 ;i<task.length ;++i ) { %>
+        <% task.forEach(t => { %>
             <div class="item">
                 <input type="checkbox">
                 <p>
-                    <%= task[i] %>
+                    <%= t.name %>
                 </p>
             </div>
-        <% } %>
+        <% }) %>
         <form action="/" method="post">
             <input type="text" id="new" name="newTask" placeholder="New Task">
             <button type="submit">+</button>
