@@ -28,6 +28,13 @@ const item3 = new Item({
 
 const itemArray = [item1, item2, item3]
 
+const listSchema = new mongoose.Schema({
+    name: String,
+    items: [itemsSchema]
+})
+
+const List = mongoose.model('List', listSchema)
+
 app.get('/', (req, res)=>{
     var today = new Date;
     var options = {
@@ -76,7 +83,28 @@ app.post('/delete', (req, res) => {
 
 app.get('/:listName', (req, res) => {
     const listName = req.params.listName
-    console.log(listName);
+    
+    List.findOne({name: listName}, (err, list) => {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            if(list) {
+                // show the existing list
+                console.log('exists');
+                res.render('template', {day: list.name, task: list.items})
+            }
+            else {
+                // create a new list
+                console.log('doesnt exist');
+                List.create({
+                    name: listName,
+                    items: itemArray
+                })
+                console.log('list created successfully');
+            }
+        } 
+    })
 })
 
 app.listen(process.env.PORT || 3000, ()=>{
