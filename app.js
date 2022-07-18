@@ -35,15 +35,17 @@ const listSchema = new mongoose.Schema({
 
 const List = mongoose.model('List', listSchema)
 
+let today = new Date;
+let options = {
+    day: 'numeric',
+    weekday: 'long',
+    month: 'long',
+    year: 'numeric', 
+};
+let dateComplete = today.toLocaleDateString('en-US', options);
+
 app.get('/', (req, res)=>{
-    var today = new Date;
-    var options = {
-        day: 'numeric',
-        weekday: 'long',
-        month: 'long',
-        year: 'numeric', 
-    };
-    var dateComplete = today.toLocaleDateString('en-US', options);
+    
 
     Item.find({}, (err, items) => {
         if(items.length == 0) {
@@ -57,16 +59,31 @@ app.get('/', (req, res)=>{
             res.redirect('/')
         }
         else
-            res.render('template', {day:dateComplete, task: items});
+            res.render('template', {date: dateComplete, list: "Today", task: items});
     })
     
     
 })
 
-app.post('/', async (req, res)=>{
-    await Item.create({name: req.body.newTask});
+app.post('/', (req, res)=>{
+    const listName = req.body.listName
+    const itemName = req.body.itemName
 
-    res.redirect('/');
+    const item = new Item({
+        name: itemName
+    })
+    
+    if(listName === "Today") {
+        item.save()
+        res.redirect('/')
+    }
+    else {
+        List.findOne({name: listName}, (err, list) => {
+            list.items.push(item)
+            list.save()
+            res.redirect(`/${listName}`)
+        })
+    }
 })
 
 app.post('/delete', (req, res) => {
@@ -81,29 +98,27 @@ app.post('/delete', (req, res) => {
     res.redirect('/')
 })
 
-app.get('/:listName', (req, res) => {
-    const listName = req.params.listName
-    
-    List.findOne({name: listName}, (err, list) => {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            if(list) {
-                // show the existing list
-                console.log('exists');
-                res.render('template', {day: list.name, task: list.items})
-            }
-            else {
-                // create a new list
-                console.log('doesnt exist');
-                List.create({
-                    name: listName,
+app.get('/:customListName', (req, res) => {
+    const customListName = req.params.customListName
+
+    List.findOne({name: customListName}, (err, foundList) => {
+        if(!err) {
+            if(!foundList) {
+                // create new list
+                console.log("doesn't exist");
+
+                const list = new List({
+                    name: customListName,
                     items: itemArray
                 })
-                console.log('list created successfully');
+                list.save()
+                res.redirect(`/${customListName}`)
+            } else {
+                // show existsing list 
+                console.log("exists");
+                res.render('template', {date: dateComplete, list: foundList.name, task: foundList.items});
             }
-        } 
+        }
     })
 })
 

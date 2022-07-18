@@ -9,10 +9,14 @@
     <title>To Do List</title>
 </head>
 <body>
-    
+    <div class="box" id="date">
+        <h1>
+            <%= date %>
+        </h1>
+    </div>
     <div class="box" id="heading">
         <h1>
-            <%= day %>
+            <%= list %>
         </h1>
     </div>
 
@@ -28,8 +32,8 @@
             </form>
         <% }) %>
         <form class="item" action="/" method="post">
-            <input type="text" id="new" name="newTask" placeholder="New Task">
-            <button type="submit">+</button>
+            <input type="text" id="new" name="itemName" placeholder="New Task">
+            <button type="submit" name="listName" value="<%= list %>">+</button>
         </form>
     </div>
 
