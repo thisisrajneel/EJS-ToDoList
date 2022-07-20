@@ -9,25 +9,32 @@
     <title>To Do List</title>
 </head>
 <body>
-    
+    <div class="box" id="date">
+        <h1>
+            <%= date %>
+        </h1>
+    </div>
     <div class="box" id="heading">
         <h1>
-            <%= day %>
+            <%= list %>
         </h1>
     </div>
 
     <div class="box">
         <% task.forEach(t => { %>
-            <div class="item">
-                <input type="checkbox">
-                <p>
-                    <%= t.name %>
-                </p>
-            </div>
+            <form action="/delete" method="post">
+                <div class="item">
+                    <input type="checkbox" name="checkbox" value="<%= t._id %>" onchange="this.form.submit()">
+                    <p>
+                        <%= t.name %>
+                    </p>
+                </div>
+                <input type="hidden" name="listName" value="<%= list %>">
+            </form>
         <% }) %>
-        <form action="/" method="post">
-            <input type="text" id="new" name="newTask" placeholder="New Task">
-            <button type="submit">+</button>
+        <form class="item" action="/" method="post">
+            <input type="text" id="new" name="itemName" placeholder="New Task">
+            <button type="submit" name="listName" value="<%= list %>">+</button>
         </form>
     </div>
 
