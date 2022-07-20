@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-//require('dotenv').config()
+const _ = require('lodash')
 
 const app = express();
 app.use(express.urlencoded({extended:true}));
@@ -87,20 +87,27 @@ app.post('/', (req, res)=>{
 })
 
 app.post('/delete', (req, res) => {
-    Item.deleteOne({_id: req.body.checkbox}, err => {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            console.log('successfully deleted');
-        }
-    })
-    res.redirect('/')
+    const checkedItemID = req.body.checkbox
+    const listName = req.body.listName
+
+    if(listName === "Today") {
+        Item.findByIdAndRemove(checkedItemID, err => {
+            if(!err) {
+                console.log('successfully deleted');
+                res.redirect('/')
+            }
+        })
+    } else {
+        List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemID}}}, (err, foundList) => {
+            if(!err) {
+                res.redirect(`/${listName}`)
+            }
+        })
+    }
 })
 
 app.get('/:customListName', (req, res) => {
-    const customListName = req.params.customListName
-
+    const customListName = _.capitalize(req.params.customListName)
     List.findOne({name: customListName}, (err, foundList) => {
         if(!err) {
             if(!foundList) {
