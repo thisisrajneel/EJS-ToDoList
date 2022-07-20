@@ -8,7 +8,7 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs')
 
-mongoose.connect('mongodb://localhost:27017/myDB')
+mongoose.connect('mongodb+srv://rajneel:fso-learn@cluster0.i7ait.mongodb.net/EJStodoList?retryWrites=true&w=majority')
 
 const itemsSchema = new mongoose.Schema({
     name: String
